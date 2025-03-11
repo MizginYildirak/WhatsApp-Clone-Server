@@ -3,13 +3,18 @@ import { v4 as uuidv4 } from "uuid"; // Correct package for server-side
 
 const server = new WebSocketServer({ port: 3000 });
 
+// when a new client is connected, connection starts working
 server.on("connection", (socket) => {
   console.log("A new client has connected.");
 
+  // when a client sends a message, message event is triggered
   socket.on("message", (message) => {
     const parsedMessage = JSON.parse(message.toString()); // Parse the incoming message
   
+    // sending all the clients 
     server.clients.forEach((client) => {
+
+      // this means the connection is open and a data can be sent
       if (client.readyState === 1) {
 
         client.send(
