@@ -10,18 +10,19 @@ server.on("connection", (socket) => {
   // when a client sends a message, message event is triggered
   socket.on("message", (message) => {
     const parsedMessage = JSON.parse(message.toString()); // Parse the incoming message
-  
-    // sending all the clients 
-    server.clients.forEach((client) => {
 
+    console.log("parsedMessage:", parsedMessage)
+
+    // sending all the clients
+    server.clients.forEach((client) => {
       // this means the connection is open and a data can be sent
       if (client.readyState === 1) {
-
         client.send(
           JSON.stringify({
-            _id: uuidv4(), 
-            text: parsedMessage.text, 
-            user: parsedMessage.user, 
+            _id: uuidv4(),
+            messageImg: parsedMessage.messageUri || null,
+            text: parsedMessage.text,
+            user: parsedMessage.user,
           })
         );
       }
